@@ -27,7 +27,7 @@ vagrant up
 
 Now you can see the superlists source code in the sites folder in the current directory where you executed vagrant up.
 
-** Provisioning a remote Ubuntu server **
+#### Provisioning a remote Ubuntu server
 
 If you have a Ubuntu 12.04 - 14.04 server with a domain name then you can use the ansible or fabric provisioning script at your discretion. Just make sure to edit the ansible inventory file (ansible.inventory) and specify your domain name and username used for ssh in the appropriate places.
 
