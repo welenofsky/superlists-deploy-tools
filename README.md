@@ -25,7 +25,7 @@ cd superlists-deploy-tools
 vagrant up
 ```
 
-Now you can see the superlists source code in the sites folder in the current directory where you executed vagrant up.
+Now you can see the superlists source code in the sites folder in the current directory where you executed vagrant up. You should also be able to see the superlists app at http://localhost:8080/
 
 #### Provisioning a remote Ubuntu server
 
