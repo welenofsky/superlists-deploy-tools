@@ -1,3 +1,4 @@
+---
 - name: Make sure virtualenv is installed
   pip: name=virtualenv executable=pip3
 
@@ -43,6 +44,9 @@
             dest=/etc/init/gunicorn-{{ host }}.conf
   notify:
       - restart gunicorn
+
+- name: Give ownership to user
+  file: path=/home/{{ username }}/sites/ state=directory owner={{ username }} group={{ username }} recurse=yes
 
 - name: Make sure gunicorn is running
   service: name=gunicorn-{{ host }} state=running
