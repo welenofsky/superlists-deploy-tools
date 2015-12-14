@@ -1,0 +1,6 @@
+- name: Git pull
+  git: repo={{ repository }}
+       dest=/home/{{ username }}/sites/{{ host }}/source/
+       accept_hostkey=True
+       update=True
+  register: repo

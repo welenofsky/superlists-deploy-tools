@@ -17,11 +17,14 @@ http://chimera.labs.oreilly.com/books/1234000000754/ch08.html
 Provisioning and Deploying Superlists
 -------------------------------------
 
-#### Locally provisioning a vagrant virtualbox VM
+#### Locally provisioning a vagrant virtualbox VM (requires ansible)
 
 ```sh
 git clone https://github.com/welenofsky/superlists-deploy-tools
 cd superlists-deploy-tools
+virtualenv virtualenv --python=python3
+pip install -r requirements.txt
+source virtualenv/bin/activate
 vagrant up
 ```
 
@@ -32,6 +35,10 @@ Now you can see the superlists source code in the sites folder in the current di
 If you have a Ubuntu 12.04 - 14.04 server with a domain name then you can use the ansible or fabric provisioning script at your discretion. Just make sure to edit the ansible inventory file (ansible.inventory) and specify your domain name and username used for ssh in the appropriate places.
 
 Ansible deployment
+
 ```sh
-ansible-playbook -i ansible.inventory provision.ansible.yaml --limit=live
+ansible-playbook -i staging site.yml
 ```
+
+More examples at:
+  http://docs.ansible.com/ansible/playbooks_best_practices.html#what-this-organization-enables-examples

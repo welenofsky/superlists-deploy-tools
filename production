@@ -1,0 +1,9 @@
+[webservers]
+websrv.example.com
+
+[dbservers]
+dbsrv.example.com
+
+[production:children]
+webservers
+dbservers

@@ -6,15 +6,15 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "jwele/trusty64"
-  config.vm.box_url = "https://vagrantcloud.com/jwele/boxes/trusty64/versions/1/providers/vmware_desktop.box"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.network :forwarded_port, guest: 80, host: 8080
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provision.ansible.yaml"
-    ansible.inventory_path = "ansible.inventory"
-    ansible.limit = "local"
+  	ansible.sudo = true
+    ansible.playbook = "site.yml"
+    ansible.inventory_path = "staging"
+    ansible.limit = "all"
   end
 
 end

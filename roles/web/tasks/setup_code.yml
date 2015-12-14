@@ -1,0 +1,48 @@
+- name: Make sure virtualenv is installed
+  pip: name=virtualenv executable=pip3
+
+- name: Checking if virtualenv exists
+  file: path=/home/{{ username }}/sites/{{ host }}/virtualenv
+  register: virtualenv
+  ignore_errors: True
+
+- name: Setting up virtualenv
+  shell: 'virtualenv --python=python3 virtualenv/'
+  args:
+    chdir: /home/{{ username }}/sites/{{ host }}/
+  when: virtualenv|failed
+
+- name: Pip install project requirements file
+  pip: requirements=/home/{{ username }}/sites/{{ host }}/source/deploy-requirements.txt
+       virtualenv=/home/{{ username }}/sites/{{ host }}/virtualenv
+  when: repo.changed
+
+- name: Update static files
+  shell: ../virtualenv/bin/python3 manage.py collectstatic --noinput
+  args:
+    chdir: /home/{{ username }}/sites/{{ host }}/source
+  notify:
+    - restart nginx
+    - restart gunicorn
+  when: repo.changed
+
+- name: Ensure database directory exists
+  file: path=/home/{{ username }}/sites/{{ host }}/database state=directory
+
+- name: Assure database exists
+  shell: '[ -f ../database/db.sqlite3 ] || ../virtualenv/bin/python3 manage.py migrate --noinput'
+  args:
+    chdir: /home/{{ username }}/sites/{{ host }}/source
+  notify:
+    - restart nginx
+    - restart gunicorn
+  when: repo.changed
+
+- name: Write gunicorn init script
+  template: src=gunicorn-upstart.conf.j2
+            dest=/etc/init/gunicorn-{{ host }}.conf
+  notify:
+      - restart gunicorn
+
+- name: Make sure gunicorn is running
+  service: name=gunicorn-{{ host }} state=running

@@ -1,0 +1,4 @@
+---
+- include: nginx.yml
+- include: copy_code.yml
+- include: setup_code.yml

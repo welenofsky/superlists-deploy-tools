@@ -6,7 +6,7 @@ Provisioning a new site
 * nginx
 * Python 3
 * Git
-* pip
+* python3-pip
 * virtualenv
 
 eg, on Ubuntu:
@@ -15,13 +15,13 @@ eg, on Ubuntu:
 
 ## Nginx Virtual Host config
 
-* see nginx.template.conf
-* replace SITENAME and USER with, eg, ubuntu and staging.my-domain.com
+* see roles/web/templates/nginx.conf.j2
+* file changes values based on staging or local deployment
 
 ## Upstart Job
 
-* see gunicorn-upstart.template.conf
-* replace SITENAME and USER with, eg, ubuntu and staging.my-domain.com
+* see roles/web/templates/gunicorn-upstart.conf.j2
+* file changes current directory based on server. see below.
 
 ## Folder structure
 Assume we have a user account at /home/username
@@ -39,13 +39,13 @@ Using the ansible deployments/provisioning script
 
 ## Required Packages
 
-* VMWare (If you are using jwele/trusty64)
+* Virtualbox
 * Vagrant
-* ansible
+* Ansible
 
 ## Setting Up Local Environment
 
-1. Get Vagrant+VMWare
+1. Get Vagrant+Virtualbox
 
 2. pip install ansible
 
@@ -55,7 +55,9 @@ Using the ansible deployments/provisioning script
 
 	cd /path/to/thisfolder && vagrant up
 
-Vagrant is set to by default provision. you may also provision at a later time with the ansible-playbook command
+Vagrant is set to by default provision. you may also provision at a later time with the ansible-playbook command.
 
-    ansible-playbook -i ansible.inventory provision.ansible.yaml --limit=local --private-key=~/.vagrant.d/insecure_private_key
+    ansible-playbook -i production site.yml --private-key=~/.vagrant.d/insecure_private_key
 
+More examples at:
+  http://docs.ansible.com/ansible/playbooks_best_practices.html#what-this-organization-enables-examples
